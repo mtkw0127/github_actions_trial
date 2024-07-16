@@ -34,3 +34,15 @@ jobs:
         run: |
           # env.KEYで取得可能
           echo ${{ env.TODAY }}
+      - name: Occur failure
+        run: |
+          # エラーを発生させる
+          exit 1
+      - name: on success
+        if: success()
+        run: |
+          echo "This is success"
+      - name: on failure
+        if: failure()
+        run: |
+          echo "This is failure"
