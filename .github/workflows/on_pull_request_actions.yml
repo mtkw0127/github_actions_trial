@@ -34,3 +34,11 @@ jobs:
         run: |
           # env.KEYで取得可能
           echo ${{ env.TODAY }}
+      - name: Set step
+        id: my-step-id
+        run: |
+          CURRENT_DIR=$(pwd)
+          echo "::set-output name=step::$(CURRENT_DIR)"
+      - name: Get step result
+        run: |
+          echo ${{ steps.my-step-id.outputs.step }}
