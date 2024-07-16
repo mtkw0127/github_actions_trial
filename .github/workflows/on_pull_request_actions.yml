@@ -10,3 +10,4 @@ jobs:
       - run: |
           echo "Hello, world!"
           echo "Add"
+          echo "${{ github.event.pull_request }}"
