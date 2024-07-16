@@ -18,4 +18,11 @@ jobs:
       - name: Check expression $
         run: |
           # Actionsの式の記法
-          echo ${{ toJson(github.event) }}
+          # 必ずしも"で囲む必要はない
+          # 下で囲んでいる理由はactions実行前に展開されechoが変な形で実行されないようにするため
+          echo "${{ toJson(github.event) }}"
+      - name: Check if expression
+        # if式で条件分岐をする
+        if: github.event_name == 'push'
+        run: |
+          echo "This is push event"
