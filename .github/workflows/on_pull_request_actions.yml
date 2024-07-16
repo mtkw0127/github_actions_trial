@@ -34,6 +34,14 @@ jobs:
         run: |
           # env.KEYで取得可能
           echo ${{ env.TODAY }}
+      - name: Object filter
+        run: |
+          # *を使う表記はObject filterという表記でその要素をArrayで取り出せる
+          echo "${{ fromJson([
+            { "name": "apple", "quantity": 1 },
+            { "name": "orange", "quantity": 2 },
+            { "name": "pear", "quantity": 1 }
+          ]).*name }}"
       - name: Occur failure
         run: |
           # エラーを発生させる
