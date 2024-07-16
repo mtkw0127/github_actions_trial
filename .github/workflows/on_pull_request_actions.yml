@@ -1,13 +1,14 @@
 name: on_pull_request_actions
-on:
-  pull_request:
-    types: [opened, ready_for_review]
+on: push
 
 jobs:
   work-around:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          echo "Hello, world!"
-          echo "Add"
+      - name: See object as json
+        run: |
           echo "${{ toJson(github.event.pull_request) }}"
+      - name: Check expression
+        run: |
+          # 以下の表記はLinuxコマンドを文字列として表示する場合に使う
+          echo $(date)
