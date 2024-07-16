@@ -1,6 +1,9 @@
 name: on_pull_request_actions
 on: push
 
+env:
+  MY_JSON: '[{ "name": "apple", "quantity": 1 },{ "name": "orange", "quantity": 2 },{ "name": "pear", "quantity": 1 }]'
+
 jobs:
   work-around:
     runs-on: ubuntu-latest
@@ -37,10 +40,7 @@ jobs:
       - name: Object filter
         run: |
           # *を使う表記はObject filterという表記でその要素をArrayで取り出せる
-          json_data='[{ "name": "apple", "quantity": 1 },{ "name": "orange", "quantity": 2 },{ "name": "pear", "quantity": 1 }]'
-          for item in ${{ fromJson(json_data) }}; do
-            echo "${{ item.name }}"
-          done
+          echo ${{ fromJson(env.MY_JSON) }}
       - name: Occur failure
         run: |
           # エラーを発生させたり・しなかったり
