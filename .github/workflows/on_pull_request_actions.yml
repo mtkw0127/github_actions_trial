@@ -38,7 +38,9 @@ jobs:
         run: |
           # *を使う表記はObject filterという表記でその要素をArrayで取り出せる
           json_data='[{ "name": "apple", "quantity": 1 },{ "name": "orange", "quantity": 2 },{ "name": "pear", "quantity": 1 }]'
-          echo "${{ fromJson(json_data)*.name }}"
+              for item in ${{ fromJson(json_data) }}; do
+              echo "${{ item.name }}"
+          done
       - name: Occur failure
         run: |
           # エラーを発生させたり・しなかったり
