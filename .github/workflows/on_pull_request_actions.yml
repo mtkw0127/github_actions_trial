@@ -40,7 +40,7 @@ jobs:
       - name: Object filter
         run: |
           # *を使う表記はObject filterという表記でその要素をArrayで取り出せる
-          echo ${{ toJson(fromJson(env.MY_JSON).*.name) }}
+          echo "${{ toJson(fromJson(env.MY_JSON).*.name) }}"
       - name: Occur failure
         run: |
           # エラーを発生させたり・しなかったり
