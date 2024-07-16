@@ -1,0 +1,11 @@
+name: on_pull_request_actions
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+
+jobs:
+  work-around:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Hello, world!"
