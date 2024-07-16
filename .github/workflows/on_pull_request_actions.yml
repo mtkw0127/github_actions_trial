@@ -15,7 +15,7 @@ jobs:
           # シェルスクリプトやターミナルコマンドでよく使われる記法
           # 以下の表記はLinuxコマンドを文字列として表示する場合に使う
           echo $(date)
-      - name: Check expression ${{ }}
+      - name: Check expression $
         run: |
           # Actionsの式の記法
           echo ${{ github.event.push }}
