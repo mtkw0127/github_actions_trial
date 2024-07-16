@@ -22,7 +22,15 @@ jobs:
           # 下で囲んでいる理由はactions実行前に展開されechoが変な形で実行されないようにするため
           echo "${{ toJson(github.event) }}"
       - name: Check if expression
-        # if式で条件分岐をする
+        # if式で条件分岐をする。ifでは$を利用する必要がないことに注意
         if: github.event_name == 'push'
         run: |
           echo "This is push event"
+      - name: Write value into env
+        run: |
+          # K=V形式の文字列を環境変数に書き込む
+          echo "TODAY=$(date)" >> $GITHUB_ENV
+      - name: Get value from env
+        run: |
+          # env.KEYで取得可能
+          echo ${{ env.TODAY }}
