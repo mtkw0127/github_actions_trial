@@ -18,4 +18,4 @@ jobs:
       - name: Check expression $
         run: |
           # Actionsの式の記法
-          echo "${{ toJson(github.event) }}"
+          echo ${{ toJson(github.event) }}
