@@ -7,8 +7,15 @@ jobs:
     steps:
       - name: See object as json
         run: |
+          # toJsonでJsonでログ表示すると捗る
+          # pull_requestをトリガーとして実行された場合のみ以下は出力されることに注意
           echo "${{ toJson(github.event.pull_request) }}"
-      - name: Check expression
+      - name: Check expression $()
         run: |
+          # シェルスクリプトやターミナルコマンドでよく使われる記法
           # 以下の表記はLinuxコマンドを文字列として表示する場合に使う
           echo $(date)
+      - name: Check expression ${{ }}
+        run: |
+          # Actionsの式の記法
+          echo ${{ github.event.push }}
