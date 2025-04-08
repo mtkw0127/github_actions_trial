@@ -20,10 +20,10 @@ jobs:
             const match = branchName.match(/(PSK2-\d+)/);
             if (match) {
               const ticketNumber = match[1];
-              echo "ticketUrl=https://88-oct.atlassian.net/browse/${ticketNumber}" >> $GITHUB_OUTPUT
-              echo "skip=false" >> $GITHUB_OUTPUT
+              core.setOutput("ticketUrl", `https://88-oct.atlassian.net/browse/${ticketNumber}`);
+              core.setOutput("skip", "false");
             } else {
-              echo "skip=true" >> $GITHUB_OUTPUT
+              core.setOutput("skip", "true");
             }
       - name: Add Ticket Link
         if: ${{ steps.check.outputs.skip != 'true' }}
@@ -33,4 +33,5 @@ jobs:
           script: |
             const prBody = context.payload.pull_request.body;
             const prNumber = context.payload.pull_request.number;
-            const ticketLink = ${{ steps.check.outputs.ticketUrl }}
+            const ticketLink = `${{ steps.check.outputs.ticketUrl }}`
+            echo ticketLink
