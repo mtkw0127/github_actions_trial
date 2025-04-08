@@ -1,0 +1,36 @@
+name: Add Ticket Link to PR Description
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  add-comment:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Check Branch Name
+        id: check
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const branchName = context.payload.pull_request.head.ref
+            const match = branchName.match(/(PSK2-\d+)/);
+            if (match) {
+              const ticketNumber = match[1];
+              echo "ticketUrl=https://88-oct.atlassian.net/browse/${ticketNumber}" >> $GITHUB_OUTPUT
+              echo "skip=false" >> $GITHUB_OUTPUT
+            } else {
+              echo "skip=true" >> $GITHUB_OUTPUT
+            }
+      - name: Add Ticket Link
+        if: ${{ steps.check.outputs.skip != 'true' }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prBody = context.payload.pull_request.body;
+            const prNumber = context.payload.pull_request.number;
+            const ticketLink = ${{ steps.check.outputs.ticketUrl }}

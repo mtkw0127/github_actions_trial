@@ -1,11 +1,56 @@
 name: on_pull_request_actions
-on:
-  pull_request:
-    types: [opened, ready_for_review]
+on: push
+
+env:
+  MY_JSON: '[{ "name": "apple", "quantity": 1 },{ "name": "orange", "quantity": 2 },{ "name": "pear", "quantity": 1 }]'
 
 jobs:
   work-around:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          echo "Hello, world!"
+      - name: See object as json
+        run: |
+          # toJsonでJsonでログ表示すると捗る
+          # pull_requestをトリガーとして実行された場合のみ以下は出力されることに注意
+          echo "${{ toJson(github.event.pull_request) }}"
+      - name: Check expression $()
+        run: |
+          # シェルスクリプトやターミナルコマンドでよく使われる記法
+          # 以下の表記はLinuxコマンドを文字列として表示する場合に使う
+          echo $(date)
+      - name: Check expression $
+        run: |
+          # Actionsの式の記法
+          # 必ずしも"で囲む必要はない
+          # 下で囲んでいる理由はactions実行前に展開されechoが変な形で実行されないようにするため
+          echo "${{ toJson(github.event) }}"
+      - name: Check if expression
+        # if式で条件分岐をする。ifでは$を利用する必要がないことに注意
+        if: github.event_name == 'push'
+        run: |
+          echo "This is push event"
+      - name: Write value into env
+        run: |
+          # K=V形式の文字列を環境変数に書き込む
+          echo "TODAY=$(date)" >> $GITHUB_ENV
+      - name: Get value from env
+        run: |
+          # env.KEYで取得可能
+          echo ${{ env.TODAY }}
+      - name: Object filter
+        run: |
+          # *を使う表記はObject filterという表記でその要素をArrayで取り出せる
+          # Arrayの中身を表示する場合はtoJsonを使うと可能
+          echo "${{ toJson(fromJson(env.MY_JSON).*.name) }}"
+      - name: Occur failure
+        run: |
+          # エラーを発生させたり・しなかったり
+          exit 0
+      - name: on success
+        if: success()
+        run: |
+          echo "This is success"
+      - name: on failure
+        if: failure()
+        run: |
+          echo "This is failure"
