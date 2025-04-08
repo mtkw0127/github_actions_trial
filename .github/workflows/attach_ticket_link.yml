@@ -7,7 +7,7 @@ on:
 
 jobs:
   add-comment:
-    runs-on: ubuntu-22.04-2cores-x64
+    runs-on: ubuntu-latest
     permissions: write-all
     steps:
       - name: Check Branch Name
