@@ -34,4 +34,4 @@ jobs:
             const prBody = context.payload.pull_request.body;
             const prNumber = context.payload.pull_request.number;
             const ticketLink = `${{ steps.check.outputs.ticketUrl }}`
-            echo ticketLink
+            console.log(`チケットリンク: ${ticketLink}`);
