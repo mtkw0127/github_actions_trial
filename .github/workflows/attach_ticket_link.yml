@@ -17,7 +17,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const branchName = context.payload.pull_request.head.ref
-            const match = branchName.match(/(PSK2-\d+)/);
+            const match = branchName.match(/(PSK2-\d+|KOKUBAN-\d+)/);
             if (match) {
               const ticketNumber = match[1];
               core.setOutput("ticketUrl", `https://88-oct.atlassian.net/browse/${ticketNumber}`);
@@ -34,4 +34,15 @@ jobs:
             const prBody = context.payload.pull_request.body;
             const prNumber = context.payload.pull_request.number;
             const ticketLink = `${{ steps.check.outputs.ticketUrl }}`
-            echo ticketLink
+            console.log(`チケットリンク: ${ticketLink}`);
+            
+            const updatedPrBody = prBody.replace(/\${Automatically Insert Ticket Link}/, ticketLink);
+            
+            // PRの本文を更新
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+              body: updatedPrBody
+            });
+            
