@@ -15,6 +15,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            // ブランチ名にPSK2-かKOKUBAN-があればJIRAのリンクを生成する
             const branchName = context.payload.pull_request.head.ref
             const match = branchName.match(/(PSK2-\d+|KOKUBAN-\d+)/);
             if (match) {
